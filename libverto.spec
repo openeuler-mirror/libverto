@@ -1,6 +1,6 @@
 Name:           libverto
 Version:        0.3.1
-Release:        1 
+Release:        2
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
@@ -62,7 +62,6 @@ autoreconf -fiv
 %install
 rm -rf  %{buildroot}
 %make_install
-cp -a %{_libdir}/libev.so.* %{buildroot}%{_libdir}
 find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %ldconfig_scriptlets
@@ -74,7 +73,6 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/%{name}-glib.so.*
 %{_libdir}/%{name}-libevent.so.*
 %{_libdir}/%{name}-libev.so.*
-%{_libdir}/libev.so.*
 
 %files devel
 %{_includedir}/verto.h
@@ -92,5 +90,11 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Mon Oct 21 2019 shenyangyang <shenyangyang4@huawei.com> - 0.3.1-2
+- Type:NA
+- ID:NA
+- SUG:NA
+- DESC:remove libev.so* that should provided by libev
+
 * Thu Sep 5 2019 openEuler Buildteam <buildteam@openeuler.org> - 0.3.1-1
 - Package init
