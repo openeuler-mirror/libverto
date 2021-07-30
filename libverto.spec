@@ -1,6 +1,6 @@
 Name:           libverto
 Version:        0.3.1
-Release:        2
+Release:        3
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
@@ -8,7 +8,7 @@ Source0:        https://github.com/latchset/libverto/releases/download/%{version
 
 
 BuildRequires:  autoconf automake libtool glib2-devel
-BuildRequires:  libevent-devel libev-devel git
+BuildRequires:  libevent-devel libev-devel 
 
 Obsoletes:      libverto-tevent < 0.3.0-2
 Obsoletes:      libverto-tevent-devel < 0.3.0-2
@@ -52,7 +52,7 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%autosetup -n %{name}-%{version} -p1 -S git
+%autosetup -n %{name}-%{version} -p1
 
 %build
 autoreconf -fiv
@@ -90,6 +90,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Fri Jul 30 2021 chenyanpanHW <chenyanpan@huawei.com> - 0.3.1-3
+- DESC: delete -S git from %autosetup, and delete BuildRequires git
+
 * Mon Oct 21 2019 shenyangyang <shenyangyang4@huawei.com> - 0.3.1-2
 - Type:NA
 - ID:NA
