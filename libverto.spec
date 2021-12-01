@@ -1,6 +1,6 @@
 Name:           libverto
-Version:        0.3.1
-Release:        2
+Version:        0.3.2
+Release:        1
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
@@ -90,6 +90,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Tue Nov 30 2021 fuanan <fuanan3@huawei.com> - 0.3.2-1
+- DESC:update version to 0.3.2
+
 * Mon Oct 21 2019 shenyangyang <shenyangyang4@huawei.com> - 0.3.1-2
 - Type:NA
 - ID:NA
