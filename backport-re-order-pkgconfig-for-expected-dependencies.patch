@@ -1,0 +1,88 @@
+From 73f7ac4d26aebfef924f3bd807f47522c2ff0ed8 Mon Sep 17 00:00:00 2001
+From: Robbie Harwood <rharwood@redhat.com>
+Date: Mon, 3 Jun 2019 16:04:16 -0400
+Subject: [PATCH] Re-order pkgconfig for expected dependencies
+
+Certain versions of autotools seem to generate recursive pkgconfig
+files such that exec_prefix is defined in terms of prefix, and libdir
+is defined in terms of exec_prefix.  While all orderings are possible,
+attempt to cope with this apparently common one.
+
+Resolves: #25
+Signed-off-by: hanxinke <hanxinke@huawei.com>
+---
+ libverto-glib.pc.in     | 2 +-
+ libverto-libev.pc.in    | 2 +-
+ libverto-libevent.pc.in | 2 +-
+ libverto-tevent.pc.in   | 2 +-
+ libverto.pc.in          | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/libverto-glib.pc.in b/libverto-glib.pc.in
+index e7424e9..da25017 100644
+--- a/libverto-glib.pc.in
++++ b/libverto-glib.pc.in
+@@ -1,7 +1,7 @@
+ prefix=@prefix@
++exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
+-exec_prefix=@exec_prefix@
+  
+ Name: libverto-glib
+ Description: Event loop abstraction interface (glib module)
+diff --git a/libverto-libev.pc.in b/libverto-libev.pc.in
+index e6eebbe..7694418 100644
+--- a/libverto-libev.pc.in
++++ b/libverto-libev.pc.in
+@@ -1,7 +1,7 @@
+ prefix=@prefix@
++exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
+-exec_prefix=@exec_prefix@
+  
+ Name: libverto-libev
+ Description: Event loop abstraction interface (libev module)
+diff --git a/libverto-libevent.pc.in b/libverto-libevent.pc.in
+index de1c63a..7c3354c 100644
+--- a/libverto-libevent.pc.in
++++ b/libverto-libevent.pc.in
+@@ -1,7 +1,7 @@
+ prefix=@prefix@
++exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
+-exec_prefix=@exec_prefix@
+  
+ Name: libverto-libevent
+ Description: Event loop abstraction interface (libevent module)
+diff --git a/libverto-tevent.pc.in b/libverto-tevent.pc.in
+index 95e5d8a..0568363 100644
+--- a/libverto-tevent.pc.in
++++ b/libverto-tevent.pc.in
+@@ -1,7 +1,7 @@
+ prefix=@prefix@
++exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
+-exec_prefix=@exec_prefix@
+  
+ Name: libverto-tevent
+ Description: Event loop abstraction interface (tevent module)
+diff --git a/libverto.pc.in b/libverto.pc.in
+index 03c9599..c949397 100644
+--- a/libverto.pc.in
++++ b/libverto.pc.in
+@@ -1,7 +1,7 @@
+ prefix=@prefix@
++exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
+-exec_prefix=@exec_prefix@
+  
+ Name: libverto
+ Description: Event loop abstraction interface
+-- 
+1.8.3.1
+
