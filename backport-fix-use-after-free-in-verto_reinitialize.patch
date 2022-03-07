@@ -1,0 +1,74 @@
+From 79fe3f664ebe6a46ce46c2bd5f42f4fa102117d4 Mon Sep 17 00:00:00 2001
+From: Robbie Harwood <rharwood@redhat.com>
+Date: Mon, 15 Mar 2021 14:28:49 -0400
+Subject: [PATCH] Fix use-after-free in verto_reinitialize()
+
+Linked-list deletion didn't actually happen, and we'd try to
+reinitialize freed modules (that weren't reinitializable anyway).
+
+Discovered by scan-build.
+
+Signed-off-by: Robbie Harwood <rharwood@redhat.com>
+Signed-off-by: hanxinke <hanxinke@huawei.com>
+---
+ src/verto.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
+
+diff --git a/src/verto.c b/src/verto.c
+index c06c92b..643474e 100644
+--- a/src/verto.c
++++ b/src/verto.c
+@@ -664,20 +664,28 @@ verto_break(verto_ctx *ctx)
+ int
+ verto_reinitialize(verto_ctx *ctx)
+ {
+-    verto_ev *tmp, *next;
++    verto_ev *next, *prev, *cur;
+     int error = 1;
+ 
+     if (!ctx)
+         return 0;
+ 
+     /* Delete all events, but keep around the forkable ev structs */
+-    for (tmp = ctx->events; tmp; tmp = next) {
+-        next = tmp->next;
++    prev = NULL;
++    for (cur = ctx->events; cur != NULL; cur = next) {
++        next = cur->next;
++
++        if (cur->flags & VERTO_EV_FLAG_REINITIABLE) {
++            ctx->module->funcs->ctx_del(ctx->ctx, cur, cur->ev);
++            prev = cur;
++            continue;
++        }
+ 
+-        if (tmp->flags & VERTO_EV_FLAG_REINITIABLE)
+-            ctx->module->funcs->ctx_del(ctx->ctx, tmp, tmp->ev);
+-        else
+-            verto_del(tmp);
++        verto_del(cur);
++        if (prev)
++            prev->next = next;
++        if (cur == ctx->events)
++            ctx->events = next;
+     }
+ 
+     /* Reinit the loop */
+@@ -685,10 +693,10 @@ verto_reinitialize(verto_ctx *ctx)
+         ctx->module->funcs->ctx_reinitialize(ctx->ctx);
+ 
+     /* Recreate events that were marked forkable */
+-    for (tmp = ctx->events; tmp; tmp = tmp->next) {
+-        tmp->actual = make_actual(tmp->flags);
+-        tmp->ev = ctx->module->funcs->ctx_add(ctx->ctx, tmp, &tmp->actual);
+-        if (!tmp->ev)
++    for (cur = ctx->events; cur != NULL; cur = cur->next) {
++        cur->actual = make_actual(cur->flags);
++        cur->ev = ctx->module->funcs->ctx_add(ctx->ctx, cur, &cur->actual);
++        if (!cur->ev)
+             error = 0;
+     }
+ 
+-- 
+1.8.3.1
+
