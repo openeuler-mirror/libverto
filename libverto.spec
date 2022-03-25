@@ -1,6 +1,6 @@
 Name:           libverto
 Version:        0.3.1
-Release:        6
+Release:        7
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
@@ -10,6 +10,8 @@ Patch6000:	backport-re-order-pkgconfig-for-expected-dependencies.patch
 Patch6001:	backport-fix-use-after-free-in-verto_free.patch
 Patch6002:	backport-fix-use-after-free-in-verto_reinitialize.patch
 Patch6003:	backport-fix-bashisms-in-configure.ac.patch
+
+Patch9000:	add-testcases-for-libverto.patch
 
 BuildRequires:  autoconf automake libtool glib2-devel
 BuildRequires:  libevent-devel libev-devel git
@@ -94,6 +96,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Fri Mar 25 2022 hanxinke <hanxinke@huawei.com> - 0.3.1-7
+- add testcases for libverto
+
 * Tue Mar 08 2022 hanxinke <hanxinke@huawei.com> - 0.3.1-6
 - fix bashisms in configure.ac
 
