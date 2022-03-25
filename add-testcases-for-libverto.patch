@@ -1,0 +1,61 @@
+From fd5d99501adce908f100e6b944f0d3179cd8f083 Mon Sep 17 00:00:00 2001
+From: hanxinke <hanxinke@huawei.com>
+Date: Fri, 25 Mar 2022 10:54:54 +0800
+Subject: [PATCH] add testcases for libverto
+
+Signed-off-by: hanxinke <hanxinke@huawei.com>
+---
+ tests/idle.c |  3 +++
+ tests/test.h | 15 ++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/tests/idle.c b/tests/idle.c
+index a0c6e48..b1b5ea8 100644
+--- a/tests/idle.c
++++ b/tests/idle.c
+@@ -32,6 +32,9 @@ exit_cb(verto_ctx *ctx, verto_ev *ev)
+     (void) ctx;
+     (void) ev;
+     retval = 1;
++    verto_set_flags(ev, VERTO_EV_FLAG_PRIORITY_LOW);
++    verto_set_flags(ev, VERTO_EV_FLAG_NONE);
++    assert(ctx == verto_get_ctx(ev));
+     switch (callcount) {
+         case 0:
+             printf("ERROR: Idle (persist) did not fire!\n");
+diff --git a/tests/test.h b/tests/test.h
+index 2c043b4..cc38acd 100644
+--- a/tests/test.h
++++ b/tests/test.h
+@@ -73,7 +73,7 @@ main(int argc, char **argv)
+ 
+     for (i=0 ; MODULES[i] ; i++) {
+         printf("Module: %s\n", MODULES[i]);
+-
++        assert((ctx = verto_default(NULL, VERTO_EV_TYPE_NONE)));
+         assert((ctx = verto_default(MODULES[i], VERTO_EV_TYPE_NONE)));
+ 
+         retval = do_test(ctx);
+@@ -83,6 +83,19 @@ main(int argc, char **argv)
+         }
+ 
+         verto_run(ctx);
++        if (strcmp(MODULES[i], "glib") == 0) {
++            assert((ctx = verto_new(MODULES[i], VERTO_EV_TYPE_NONE)));
++            assert(!verto_set_default(MODULES[i], VERTO_EV_TYPE_IDLE));
++            assert(!verto_set_allocator(NULL, 0));
++            retval = do_test(ctx);
++            if (retval != 0) {
++                verto_free(ctx);
++                return retval;
++            }
++            verto_run_once(ctx);
++            assert(verto_reinitialize(ctx));
++        }
++
+         verto_free(ctx);
+ 
+         if (retval != 0)
+-- 
+2.27.0
+
