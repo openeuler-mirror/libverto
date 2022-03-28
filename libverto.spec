@@ -1,6 +1,6 @@
 Name:           libverto
 Version:        0.3.1
-Release:        7
+Release:        8
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
@@ -72,6 +72,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %ldconfig_scriptlets
 
+%check
+make check
+
 %files
 %license COPYING
 %doc AUTHORS ChangeLog NEWS README
@@ -96,6 +99,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Mon Mar 28 2022 hanxinke <hanxinke@huawei.com> - 0.3.1-8
+- enable test cases
+
 * Fri Mar 25 2022 hanxinke <hanxinke@huawei.com> - 0.3.1-7
 - add testcases for libverto
 
