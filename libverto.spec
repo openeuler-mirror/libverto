@@ -1,12 +1,13 @@
 Name:           libverto
 Version:        0.3.1
-Release:        3
+Release:        4
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
 Source0:        https://github.com/latchset/libverto/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 Patch6000:      backport-re-order-pkgconfig-for-expected-dependencies.patch
+Patch6001:      backport-fix-use-after-free-in-verto_free.patch
 
 BuildRequires:  autoconf automake libtool glib2-devel
 BuildRequires:  libevent-devel libev-devel git
@@ -91,6 +92,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Thu Mar 31 2022 hehuazhen <hehuazhen@huawei.com> - 0.3.1-4
+- fix use after free in verto_free
+
 * Thu Mar 31 2022 hehuazhen <hehuazhen@huawei.com> - 0.3.1-3
 - fix broken pkgconfig files
 
