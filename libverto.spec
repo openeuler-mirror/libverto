@@ -1,6 +1,6 @@
 Name:           libverto
 Version:        0.3.2
-Release:        1
+Release:        2
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
@@ -15,14 +15,14 @@ Obsoletes:      libverto-tevent-devel < 0.3.0-2
 
 
 Provides:  %{name}-glib
-Obsoletes: %{name}-glib
+Obsoletes: %{name}-glib < %{version}-%{release}
 
 Provides:  %{name}-module-base = %{version}-%{release}
 Provides:  %{name}-libevent 
-Obsoletes: %{name}-libevent
+Obsoletes: %{name}-libevent < %{version}-%{release}
 
 Provides:  %{name}-libev
-Obsoletes: %{name}-libev
+Obsoletes: %{name}-libev < %{version}-%{release}
 
 %description
 libverto exists to solve an important problem: many applications and libraries
@@ -39,13 +39,13 @@ Requires:  %{name} = %{version}-%{release}
 Requires:  pkgconfig
 
 Provides:  %{name}-glib-devel
-Obsoletes: %{name}-glib-devel
+Obsoletes: %{name}-glib-devel < %{version}-%{release}
 
 Provides:  %{name}-libevent-devel
-Obsoletes: %{name}-libevent-devel
+Obsoletes: %{name}-libevent-devel < %{version}-%{release}
 
 Provides:  %{name}-libev-devel
-Obsoletes: %{name}-libev-devel
+Obsoletes: %{name}-libev-devel < %{version}-%{release}
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -90,6 +90,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Wed Sep 7 2022 fuanan <fuanan3@h-partners.com> - 0.3.2-2
+- Add version for Obsoletes
+
 * Tue Nov 30 2021 fuanan <fuanan3@huawei.com> - 0.3.2-1
 - DESC:update version to 0.3.2
 
