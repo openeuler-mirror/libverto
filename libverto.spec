@@ -1,6 +1,6 @@
 Name:           libverto
 Version:        0.3.2
-Release:        2
+Release:        3
 Summary:        Main loop abstraction library
 License:        MIT
 URL:            https://github.com/latchset/libverto
@@ -66,6 +66,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %ldconfig_scriptlets
 
+%check
+make check
+
 %files
 %license COPYING
 %doc AUTHORS ChangeLog NEWS README
@@ -90,6 +93,9 @@ find  %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/pkgconfig/%{name}-libev.pc
 
 %changelog
+* Tue Mar 28 2023 fuanan <fuanan3@h-partners.com> - 0.3.2-3
+- enable check test suite
+
 * Wed Sep 7 2022 fuanan <fuanan3@h-partners.com> - 0.3.2-2
 - Add version for Obsoletes
 
